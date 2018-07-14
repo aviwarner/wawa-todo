@@ -11,6 +11,15 @@ class Api::ListsController < ApiController
     end
   end
 
+  def update
+    list = List.find(params[:id])
+    if list.update(list_params)
+      render json: list
+    else
+      render json: { errors: list.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
   def destroy
     begin
       list = List.find(params[:id])
@@ -23,9 +32,12 @@ class Api::ListsController < ApiController
 
   private
   def list_params
-    params.require(:list).permit(:name, :privatea)
+    params.require(:list).permit(:name, :private)
   end
 end
 
-# Destroy test
+#  tests
 # curl -u buymagicfish@gmail.com:asdfjkl -X DELETE http://localhost:3000/api/users/1/lists/1/
+# curl -X PUT -u buymagicfish@gmail.com:asdfjkl -d 'list[private]=true' http://localhost:3000/api/users/1/lists/2/
+# curl -X PUT -u buymagicfish@gmail.com:asdfjkl -d "list[private]=false" http://localhost:3000/api/users/1/lists/2/
+# curl -X PUT -u buymagicfish@gmail.com:asdfjkl -d '{ "list[private]": true }' http://localhost:3000/api/users/1/lists/2/
