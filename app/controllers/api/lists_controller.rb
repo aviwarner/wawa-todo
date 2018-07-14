@@ -1,6 +1,11 @@
 class Api::ListsController < ApiController
   before_action :authenticated?
 
+  def index
+    lists = List.where("user_id = ?", params[:user_id])
+    render json: lists, each_serializer: ListSerializer
+  end
+
   def create
     list = List.new(list_params)
     list.user_id = params[:user_id]
@@ -41,3 +46,4 @@ end
 # curl -X PUT -u buymagicfish@gmail.com:asdfjkl -d 'list[private]=true' http://localhost:3000/api/users/1/lists/2/
 # curl -X PUT -u buymagicfish@gmail.com:asdfjkl -d "list[private]=false" http://localhost:3000/api/users/1/lists/2/
 # curl -X PUT -u buymagicfish@gmail.com:asdfjkl -d '{ "list[private]": true }' http://localhost:3000/api/users/1/lists/2/
+# curl -u buymagicfish@gmail.com:asdfjkl http://localhost:3000/api/users/1/lists/

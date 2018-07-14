@@ -1,11 +1,4 @@
 Rails.application.routes.draw do
-  # namespace :api do
-  #   get 'items/create'
-  # end
-  #
-  # namespace :api do
-  #   get 'lists/create'
-  # end
 
   get 'welcome/about'
   root to: 'welcome#index'
@@ -16,7 +9,7 @@ Rails.application.routes.draw do
     end
 
     resources :lists, only: [] do
-      resources :items, only: [:create]
+      resources :items, only: [:create, :index]
     end
 
     resources :items, only: [:destroy, :update]
